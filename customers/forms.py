@@ -84,8 +84,13 @@ class CompanyDetailsConfirmForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.confirm_button_text = 'Confirm'
 
+    # Why is there an LRU cache?
+    #
+    # This is called by the clean method first to verify the existance
+    # of the company. Subsequently it is called again by the save method
+    # to save additional details about the company.
     @lru_cache(maxsize=None)
-    def get_company_details(self, company_number):
+    def _get_company_details(self, company_number):
         endpoint = 'https://api.companieshouse.gov.uk/company/{}'.format(
             company_number
         )
@@ -100,7 +105,7 @@ class CompanyDetailsConfirmForm(forms.ModelForm):
         return company_details.json()
 
     def save(self, *args, **kwargs):
-        company_details = self.get_company_details(
+        company_details = self._get_company_details(
             self.cleaned_data['registered_company_number']
         )
 
@@ -116,11 +121,15 @@ class CompanyDetailsConfirmForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         # Raises an error if the company doesn't exist
-        self.get_company_details(cleaned_data['registered_company_number'])
+        self._get_company_details(cleaned_data['registered_company_number'])
         return cleaned_data
 
 
 class CompanyDetailsVerifyForm(forms.ModelForm):
+    """
+    Sub form used to populate the company details
+    verify form
+    """
     class Meta:
         model = Company
         fields = []
