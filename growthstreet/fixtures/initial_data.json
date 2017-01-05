@@ -34,7 +34,6 @@
             "last_name": "",
             "password": "pbkdf2_sha256$30000$IbB9c1K6VDj5$efUO0mJKS55mih7XNgu1HG62P8f8TfWDDqzTNeaGkb0=",
             "phone_number": "",
-            "registered_company_number": "",
             "user_permissions": [],
             "username": "rollo"
         },

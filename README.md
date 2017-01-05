@@ -19,3 +19,24 @@ While the final product should have an interface via a web browser, there is no 
 #### Delivery
 
 Fork this repository, make your additions, and then submit a pull request with your submission. If you haven't previously, please contact us with your CV at jobs@growthstreet.co.uk as well.
+
+#### My (Rollo's) Solution
+
+This is a rather simple task, but I wanted to brush up on some new features
+within Django.
+
+This submission uses Django-AllAuth for the accounts. Twillo for Mobile Phone
+verification, combined with a Celery queue and Django channels to communicate
+progress with the user.  The Companies House API is used for the fetching of 
+additional company data.
+
+Apologies for the lack of tests, I was a bit strapped for time coming back from
+Ireland.
+
+To deploy
+
+```
+$ docker-compose run web python manage.py migrate
+$ docker-compose run web python manage.py loaddata growthstreet/fixtures/initial_data.json
+$ docker-compose up -d
+```
