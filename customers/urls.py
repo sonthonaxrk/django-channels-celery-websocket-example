@@ -1,13 +1,16 @@
 
 from django.conf.urls import url
 from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
 
 from .views import (
     ProfileBasic, ProfilePhoneNumber, ProfileVerifyPhoneNumber,
     ProfileCompanyCreateView, ProfileCompanyVerifyView
 )
 
-profile_root = TemplateView.as_view(template_name='profile.html')
+profile_root = login_required(
+    TemplateView.as_view(template_name='profile.html')
+)
 
 urlpatterns = [
     url(r'accounts/profile/$',
