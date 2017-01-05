@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h1> Verify Phone Number </h1>
+<h2> Enter Code </h2>
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit" class="btn btn-primary">{{ form.confirm_button_text }}</button>
+  <a class="btn btn-primary" href="{% url 'account_phone_number' %}">Re-enter phone number</a>
+</form>
+
+
+<div class="col-6 mx-auto">
+  <h4>SMS Progress</h4>
+  <progress id="progress-widget" value="20" max="100"></progress>
+  <div id="progress-text">Getting Progress</div>
+</div>
+
+<script>
+socket = new WebSocket("ws://" + window.location.host + "/phone_verify/");
+socket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+
+    if (data.sending) {
+        document.getElementById('progress-widget').value = '50';
+        document.getElementById('progress-text').innerHTML = 'SMS message is being sent';
+    }
+
+    if (data.success) {
+        document.getElementById('progress-widget').value = '100';
+        document.getElementById('progress-text').innerHTML = 'SMS message was sent';
+    }
+}
+</script>
+
+
+{% endblock %}

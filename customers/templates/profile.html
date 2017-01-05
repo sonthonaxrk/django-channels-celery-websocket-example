@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Profile</h1>
+<hr>
+<section>
+  <h2>Basic User Info {% if not user.confirmed_name %}(not verified){% endif %}</h2>
+  <table class="table-light py2">
+    <tbody>
+      <tr> <td>First Name</td> <td>{{ user.first_name }}</td> </tr>
+      <tr> <td>Last Name</td> <td>{{ user.last_name }}</td> </tr>
+    </tbody>
+  </table>
+  <a href="{% url "account_basic_info" %}" class="btn btn-primary">Edit & Verify</a>
+</section>
+
+<section>
+  <h2>Contact Details</h2>
+  <table class="table-light py2">
+    <tbody>
+      {% if user.phone_number %}
+        <tr> <td>Phone Number</td> <td>{{ user.phone_number }}</td> </tr>
+      {% else %}
+        <tr> <td>Phone Number not yet set</td> </tr>
+      {% endif %}
+    </tbody>
+  </table>
+  <a href="{% url "account_phone_number" %}" class="btn btn-primary">Edit & Verify</a>
+</section>
+
+<section>
+  <h2>Company Details</h2>
+  <table class="table-light py2">
+    <tbody>
+      {% if user.company.verified %}
+        <tr> <td>Sector</td> <td>{{ user.company.business_sector }}</td> </tr>
+        <tr> <td>Address Line 1</td> <td>{{ user.company.address_line_1 }}</td> </tr>
+        <tr> <td>Address Line 2</td> <td>{{ user.company.address_line_2 }}</td> </tr>
+        <tr> <td>Name</td> <td>{{ user.company.name }}</td> </tr>
+        <tr> <td>Country</td> <td>{{ user.company.country }}</td> </tr>
+        <tr> <td>Locality</td> <td>{{ user.company.locality }}</td> </tr>
+        <tr> <td>Postal Code</td> <td>{{ user.company.postal_code }}</td> </tr>
+        <tr> <td>Company Number</td> <td>{{ user.company.registered_company_number }}</td> </tr>
+      {% else %}
+        <tr> <td>
+            Company Number not yet set
+            <a href="{% url "account_company_details" %}" class="btn btn-primary">Link Company</a>
+        </td> </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</section>
+
+{% endblock %}

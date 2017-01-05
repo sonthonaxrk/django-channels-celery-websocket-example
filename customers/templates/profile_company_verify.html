@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="overflow-scroll">
+  <h2>Is this your company?</h2>
+  <table class="table-light py2">
+    <tbody>
+      <tr> <td>Sector</td> <td>{{ company.business_sector }}</td> </tr>
+      <tr> <td>Address Line 1</td> <td>{{ company.address_line_1 }}</td> </tr>
+      <tr> <td>Address Line 2</td> <td>{{ company.address_line_2 }}</td> </tr>
+      <tr> <td>Name</td> <td>{{ company.name }}</td> </tr>
+      <tr> <td>Country</td> <td>{{ company.country }}</td> </tr>
+      <tr> <td>Locality</td> <td>{{ company.locality }}</td> </tr>
+      <tr> <td>Postal Code</td> <td>{{ company.postal_code }}</td> </tr>
+      <tr> <td>Company Number</td> <td>{{ company.registered_company_number }}</td> </tr>
+    </tbody>
+  </table>
+
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Confirm Details</button>
+</form>
+</section>
+
+{% endblock %}
