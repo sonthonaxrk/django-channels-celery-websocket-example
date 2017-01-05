@@ -69,6 +69,11 @@ class PhoneNumberConfirmForm(forms.ModelForm):
 
 
 class CompanyDetailsConfirmForm(forms.ModelForm):
+    """
+    This form takes a registered_company_number and
+    fetches additional information from the companieshouse
+    API and saves it onto the model.
+    """
     class Meta:
         model = Company
         fields = [
