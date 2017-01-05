@@ -11,10 +11,13 @@ from celery.result import AsyncResult
 @http_session
 @channel_session
 def connect_waiter(message):
-
+    # When the phone number progress websocket connects
+    # we need to check if the task already finnished by
+    # the time the WS connected.
     task_id = message.http_session['active_phone_number_task_id']
     task = AsyncResult(task_id)
 
+    # If that's the case, send back an already done message
     if task.ready():
         content = json.dumps({
             'success': True,
@@ -35,6 +38,7 @@ def connect_waiter(message):
             'sending': True,
         })
 
+        # Send currently in progress message
         group.send({
             'text': content
         })
@@ -44,6 +48,7 @@ def connect_waiter(message):
 @http_session
 @channel_session
 def disconnect_waiter(message):
+    # Remove dead channels
     Group("phone_verify-%s" % message.user.username).discard(
         message.reply_channel
     )
