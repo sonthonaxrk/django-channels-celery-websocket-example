@@ -1,0 +1,44 @@
+[
+    {
+        "fields": {
+            "domain": "lvh.me",
+            "name": "lvh.me"
+        },
+        "model": "sites.site",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "client_id": "906524160181-7poqvlhudpjsulnuao28cm36lpt4sql7.apps.googleusercontent.com",
+            "key": "",
+            "name": "google",
+            "provider": "google",
+            "secret": "_ioXzCC0A5opjRQSy3FcHMWP",
+            "sites": [
+                1
+            ]
+        },
+        "model": "socialaccount.socialapp",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "date_joined": "2016-12-30T22:53:28.923Z",
+            "email": "rollo@example.com",
+            "first_name": "",
+            "groups": [],
+            "is_active": true,
+            "is_staff": true,
+            "is_superuser": true,
+            "last_login": null,
+            "last_name": "",
+            "password": "pbkdf2_sha256$30000$IbB9c1K6VDj5$efUO0mJKS55mih7XNgu1HG62P8f8TfWDDqzTNeaGkb0=",
+            "phone_number": "",
+            "registered_company_number": "",
+            "user_permissions": [],
+            "username": "rollo"
+        },
+        "model": "customers.customer",
+        "pk": 1
+    }
+]
