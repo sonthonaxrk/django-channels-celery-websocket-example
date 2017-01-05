@@ -25,7 +25,10 @@ SECRET_KEY = '8*31r0(wxr^ryvr9o&a85jr&g@yc8*g^-d&g_dk!ti2+obhx9!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    'lvh.me',
+]
 
 
 # Application definition
@@ -39,7 +42,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -48,17 +51,20 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-)
+]
 
 ROOT_URLCONF = 'growthstreet.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            'templates/'
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.request',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -68,16 +74,38 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'growthstreet.wsgi.application'
 
+redis_host = os.environ.get('REDIS_HOST', 'localhost')
+
+# Channel layer definitions
+# http://channels.readthedocs.org/en/latest/deploying.html#setting-up-a-channel-backend
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "asgi_redis.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(redis_host, 6379)],
+        },
+        "ROUTING": "growthstreet.routing.channel_routing",
+    },
+}
+
+
+WSGI_APPLICATION = 'growthstreet.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+
+POSTGRES_HOST = os.environ.get('POSTGRES_HOST', 'localhost')
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
@@ -95,8 +123,69 @@ USE_L10N = True
 
 USE_TZ = True
 
+SITE_ID = 1
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+LOGGING = {
+    'disable_existing_loggers': False,
+    'version': 1,
+    'handlers': {
+        'console': {
+            # logging handler that outputs log messages to terminal
+            'class': 'logging.StreamHandler',
+            'level': 'DEBUG',  # message level to be written to console
+        },
+    },
+    'loggers': {
+        '': {
+            # this sets root level logger to log debug and higher level
+            # logs to console. All other loggers inherit settings from
+            # root level logger.
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,  # this tells logger to send logging message
+                                 # to its parent (will send if set to True)
+        },
+        'django.db': {
+            # django also has database level logging
+        },
+    },
+}
+
+AUTH_USER_MODEL = 'customers.Customer'
+
+INTERNAL_IPS = [
+    'lvh.me',
+    'localhost',
+]
+
+COMPANIES_HOUSE_API_KEY = 'soX9-VOWudK9-0_LLVdg5d0-WFcmOU6mlU67ZygA'
+
+TWILLO_API_KEY = "AC12c8fb8a45caae7c9c4e35a40acc3c98"
+TWILLO_AUTH_TOKEN = "92fe973a76a0e32d4cac5d70c66bd02e"
+TWILLO_FROM_NUMBER = "+353861802596"
+
+CELERY_BROKER_URL = 'redis://{}:6379/0'.format(redis_host)
+
+CELERY_REDIS_HOST = redis_host
+CELERY_REDIS_PORT = 6379
+CELERY_REDIS_DB = 0
+CELERY_RESULT_BACKEND = 'redis'
+
+# use json format for everything
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+
+# django-allauth
+ACCOUNT_EMAIL_VERIFICATION = 'none'
