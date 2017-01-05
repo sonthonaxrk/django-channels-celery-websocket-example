@@ -40,3 +40,5 @@ $ docker-compose run web python manage.py migrate
 $ docker-compose run web python manage.py loaddata growthstreet/fixtures/initial_data.json
 $ docker-compose up -d
 ```
+
+Navigate to lvh.me:8000
