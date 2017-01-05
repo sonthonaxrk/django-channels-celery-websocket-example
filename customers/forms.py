@@ -36,7 +36,7 @@ class PhoneNumberVerifyForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
-        verify_token = self.cleaned_data.get('verify_token')
+        verify_token = cleaned_data.get('verify_token')
 
         if verify_token != self.request.session['verify_token']:
             raise ValidationError('Incorrect Validation Code')
