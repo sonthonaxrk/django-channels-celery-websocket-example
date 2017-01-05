@@ -1,5 +1,8 @@
 import json
 
+from time import sleep
+from random import randint
+
 from celery.utils.log import get_task_logger
 
 from channels import Group
@@ -21,8 +24,6 @@ logger = get_task_logger(__name__)
 def send_phone_code(user_id, verify_token, phone_number):
     customer = Customer.objects.get(id=user_id)
 
-    from time import sleep
-    from random import randint
     # simulating a short delay
     sleep(randint(3, 9))
 
