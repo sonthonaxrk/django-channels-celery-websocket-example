@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<ul>
+  {% for loan in loans %}
+  <li><a href="{% url "loan_detail" loan_id=loan.id %}">{{ loan.id }} - {{ loan.reason }}</a></li>
+  {% endfor %}
+</ul>
+
+<a href={% url "loan_create" %}>Create Loan</a>
+
+{% endblock %}

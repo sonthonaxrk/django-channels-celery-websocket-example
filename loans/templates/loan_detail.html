@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<section class="overflow-scroll">
+  <h2>Loan Details</h2>
+  <table class="table-light py2">
+    <tbody>
+      <tr> <td>Company</td> <td>{{ loan.company.name }}</td> </tr>
+      <tr> <td>Amount</td> <td>{{ loan.amount }}</td> </tr>
+      <tr> <td>End date</td> <td>{{ loan.end_date }}</td> </tr>
+      <tr> <td>Reason</td> <td>{{ loan.reason }}</td> </tr>
+    </tbody>
+  </table>
+</section>
+
+<a href={% url "loan_index" %}>Back</a>
+
+
+{% endblock %}
