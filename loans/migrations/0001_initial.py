@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('customers', '0010_auto_20170105_0123'),
+        ('customers', '0001_squashed_0010_auto_20170105_0123'),
     ]
 
     operations = [
