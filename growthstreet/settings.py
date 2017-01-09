@@ -20,14 +20,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '8*31r0(wxr^ryvr9o&a85jr&g@yc8*g^-d&g_dk!ti2+obhx9!'
+SECRET_KEY = os.environ.get(
+    'SECRET_KEY', '8*31r0(wxr^ryvr9o&a85jr&g@yc8*g^-d&g_dk!ti2+obhx9!'
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', True)
 
 ALLOWED_HOSTS = [
     'localhost',
     'lvh.me',
+    os.environ.get('AWS_HOST', ''),
 ]
 
 
@@ -183,7 +186,7 @@ INTERNAL_IPS = [
 COMPANIES_HOUSE_API_KEY = 'soX9-VOWudK9-0_LLVdg5d0-WFcmOU6mlU67ZygA'
 
 TWILLO_API_KEY = "AC12c8fb8a45caae7c9c4e35a40acc3c98"
-TWILLO_AUTH_TOKEN = "92fe973a76a0e32d4cac5d70c66bd02e"
+TWILLO_AUTH_TOKEN = os.environ.get('TWILLO_AUTH_TOKEN')
 TWILLO_FROM_NUMBER = "+441915801275"
 
 CELERY_BROKER_URL = 'redis://{}:6379/0'.format(redis_host)

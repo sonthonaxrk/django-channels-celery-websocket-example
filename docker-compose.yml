@@ -3,12 +3,14 @@ version: "2"
 services:
   redis:
     image: redis:alpine
+    cpu_shares: 100
+    mem_limit: 524288000
   web:
-    build: .
+    image: rollokb/growth-street-test:latest 
+    cpu_shares: 200 
+    mem_limit: 524288000
     command: python manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/code
-    ports:
+    ports: 
       - "8000:8000"
     depends_on:
       - redis
@@ -16,6 +18,8 @@ services:
   db:
     image: postgres:9.4
     hostname: db
+    cpu_shares: 100
+    mem_limit: 524288000
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -24,10 +28,10 @@ services:
       - "5432:5432"
 
   worker:
-    build: .
+    cpu_shares: 100
+    mem_limit: 524288000
+    image: rollokb/growth-street-test:latest
     command: celery -A growthstreet.celery worker
-    volumes:
-      - .:/code
     links:
       - redis
     depends_on:

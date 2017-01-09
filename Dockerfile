@@ -6,3 +6,4 @@ RUN mkdir /code
 WORKDIR /code
 ADD . /code/
 RUN pip install -r requirements/base.txt
+VOLUME /code
